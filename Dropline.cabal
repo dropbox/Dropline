@@ -19,6 +19,7 @@ executable Dropline
   main-is:             Dropline.hs
   -- other-modules:       
   other-extensions:    OverloadedStrings
-  build-depends:       base >=4.8 && <4.9, network >=2.6 && <2.7, stm >=2.4 && <2.5, bytestring >=0.10 && <0.11, happstack-server >=7.4 && <7.5, blaze-html >=0.8 && <0.9, mtl >=2.2 && <2.3, containers >=0.5 && <0.6, time >=1.5 && <1.6
+  build-depends:       base >=4.5 && <4.9, network >=2.6 && <2.7, stm >=2.4 && <2.5, bytestring >=0.10 && <0.11, happstack-server >=7.4 && <7.5, blaze-html >=0.8 && <0.9, mtl >=2.2 && <2.3, containers >=0.5 && <0.6, time >=1.5 && <1.6
   hs-source-dirs:      src
   default-language:    Haskell2010
+

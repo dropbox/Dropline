@@ -10,3 +10,7 @@ http://<server>/ shows a human-friendly signal strength indicator.
 
 http://<server>/raw shows a list of RSSIs (without their associated MAC addresses).
 
+To install,
+
+    cd Dropline
+    cabal install
