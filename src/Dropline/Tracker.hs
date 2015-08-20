@@ -45,10 +45,10 @@ reap signals deleteQueue = do
     -- If a signal was recorded over 5 minutes ago, we should try to delete
     let old = currentTime - 300.0 
     atomically $ do
-        dq  <- readTVar deleteQueue
+        dq   <- readTVar deleteQueue
         sigs <- readTVar signals
         let isOld (mac, time) = time <= old
-        let (unexpired, expired) = Seq.spanr isOld dq
+        let (expired, unexpired) = Seq.spanr isOld dq
         let sigs' = foldl' remove sigs expired
         writeTVar deleteQueue unexpired
         writeTVar signals     sigs'

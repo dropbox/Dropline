@@ -3,7 +3,7 @@
 module Dropline.Server (serve) where
 
 import Dropline.Tracker (Statuses, Status(..))
-import Data.Time.Clock.POSIX (POSIXTime)
+import Data.Time.Clock.POSIX (POSIXTime, getPOSIXTime)
 import Dropline.Wifi (RSSI(..))
 import Control.Concurrent.STM (TVar, readTVar, atomically)
 import Happstack.Server (Response)
@@ -41,7 +41,8 @@ friendly rssis = do
 process :: TVar Statuses -> ServerPart [(RSSI, POSIXTime)]
 process signals = do
     signals' <- liftIO . atomically . readTVar $ signals
-    let format (Status rssi first last) = (rssi, last - first)
+    time <- liftIO getPOSIXTime
+    let format (Status rssi first last) = (rssi, time - first)
     return $ map format $ elems signals'
 
 score :: (RSSI, POSIXTime) -> Double
