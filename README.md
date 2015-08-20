@@ -6,9 +6,9 @@ It processes this data and keeps track of all MAC addresses seen in the last min
 
 It then presents this data over HTTP.
 
-http://server/ shows a human-friendly signal strength indicator.
+`http://server/` shows a human-friendly signal strength indicator.
 
-http://server/raw shows a list of RSSIs (without their associated MAC addresses).
+`http://server/raw` shows a list of RSSIs (without their associated MAC addresses).
 
 To install,
 

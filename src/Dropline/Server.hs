@@ -3,7 +3,7 @@
 module Dropline.Server (serve) where
 
 import Dropline.Tracker (Signals)
-import Dropline.Wifi (RSSI)
+import Dropline.Wifi (RSSI(..))
 import Control.Concurrent.STM (TVar, readTVar, atomically)
 import Happstack.Server (Response)
 import Happstack.Server.Routing (dir)
@@ -23,7 +23,8 @@ serve signals = do
 raw :: ServerPart [RSSI] -> ServerPart Response
 raw rssis = dir "raw" $ do
     signalData <- rssis
-    ok $ toResponse (show signalData)
+    let json = show [rssi | RSSI rssi <- signalData]
+    ok $ toResponse json
 
 friendly :: ServerPart [RSSI] -> ServerPart Response
 friendly rssis = do
