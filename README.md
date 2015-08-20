@@ -1,4 +1,6 @@
-This is a simple utility to estimate how busy an area is using wifi signals. I built this as a project for Dropbox's Hack Week 2015. My inspiration is waiting in long lines at the Tuck Shop (and wishing I wasn't).
+A simple utility to estimate how busy an area is using wifi signals. 
+Built for Dropbox's Hack Week 2015. 
+Inspired by long lines at the Tuck Shop.
 
 It connects to a Kismet server to gather Wi-Fi data.
 
