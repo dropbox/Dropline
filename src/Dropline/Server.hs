@@ -30,15 +30,15 @@ raw rssis = dir "raw" $ do
 friendly :: ServerPart [(RSSI, POSIXTime)] -> ServerPart Response
 friendly rssis = do
     signalData <- rssis
-    let busyness = sum $ map score signalData
+    let busyness = round $ sum $ map score signalData
     ok $ toResponse $ H.html $ do
         H.head $ do
             H.title "Dropline busy-o-meter"
         H.body $ do
             let center x = x ! A.style "text-align:center"
-            center $ H.p $ "It is"
-            center $ H.p $ H.h1 $ H.toHtml (show busyness)
-            center $ H.p $ "busy."
+            center $ H.p  $ "It is"
+            center $ H.h1 $ H.toHtml (show busyness)
+            center $ H.p  $ "busy."
 
 process :: TVar Statuses -> ServerPart [(RSSI, POSIXTime)]
 process signals = do
@@ -47,8 +47,8 @@ process signals = do
     let format (Status rssi first last) = (rssi, time - first)
     return $ map format $ elems signals'
 
-score :: (RSSI, POSIXTime) -> Int
-score (RSSI signal, duration) = round (timeScore * signalScore / 7)
+score :: (RSSI, POSIXTime) -> Double
+score (RSSI signal, duration) = timeScore * signalScore / 7
     where
     -- Starts to ignore signals around 2 or more hours old
     timeScore :: Double
