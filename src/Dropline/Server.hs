@@ -10,7 +10,8 @@ import Happstack.Server (Response)
 import Happstack.Server.Routing (dir)
 import Happstack.Server.SimpleHTTP (ServerPart,
     simpleHTTP, nullConf, port, toResponse, ok)
-import qualified Text.Blaze.Html5 as H
+import Text.Blaze.Html5 as H (html, head, title, body, p, toHtml, h1, (!))
+import Text.Blaze.Html5.Attributes as A (style)
 import Control.Applicative ((<|>))
 import Control.Monad.Trans (liftIO)
 import Data.Map.Strict (elems)
@@ -34,9 +35,10 @@ friendly rssis = do
         H.head $ do
             H.title "Dropline busy-o-meter"
         H.body $ do
-            H.p $ "It is"
-            H.p $ H.h1 $ H.toHtml (show busyness)
-            H.p $ "busy."
+            let center x = x ! A.style "align:center"
+            center $ H.p $ "It is"
+            center $ H.p $ H.h1 $ H.toHtml (show busyness)
+            center $ H.p $ "busy."
 
 process :: TVar Statuses -> ServerPart [(RSSI, POSIXTime)]
 process signals = do
@@ -45,10 +47,12 @@ process signals = do
     let format (Status rssi first last) = (rssi, time - first)
     return $ map format $ elems signals'
 
-score :: (RSSI, POSIXTime) -> Double
-score (RSSI signal, duration) = timeScore * signalScore
+score :: (RSSI, POSIXTime) -> Int
+score (RSSI signal, duration) = round (timeScore * signalScore / 20)
     where
     -- Starts to ignore signals around 2 or more hours old
+    timeScore :: Double
     timeScore = (1/) . (1+) . exp . (/200) $ realToFrac (duration - 2*60*60)
     -- Starts to ignore signals below around 50 dBm
+    signalScore :: Double
     signalScore = (1/) . (1+) . exp . (/10) $ realToFrac (negate signal - 50)
