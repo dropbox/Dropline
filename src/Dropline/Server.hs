@@ -30,15 +30,18 @@ raw rssis = dir "raw" $ do
 friendly :: ServerPart [(RSSI, POSIXTime)] -> ServerPart Response
 friendly rssis = do
     signalData <- rssis
-    let busyness = round $ sum $ map score signalData
+    let busyScore = round $ sum $ map score signalData
+    let busyness | busyScore < 20  = "Not busy"
+                 | busyScore < 50  = "A little busy"
+                 | busyScore < 100 = "Busy"
+                 | otherwise       = "Very busy"
     ok $ toResponse $ H.html $ do
         H.head $ do
             H.title "Dropline busy-o-meter"
         H.body $ do
             let center x = x ! A.style "text-align:center"
             center $ H.p  $ "It is"
-            center $ H.h1 $ H.toHtml (show busyness)
-            center $ H.p  $ "busy."
+            center $ H.h1 $ busyness
 
 process :: TVar Statuses -> ServerPart [(RSSI, POSIXTime)]
 process signals = do
