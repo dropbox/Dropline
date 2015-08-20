@@ -15,6 +15,7 @@ import Text.Blaze.Html5.Attributes as A (style)
 import Control.Applicative ((<|>))
 import Control.Monad.Trans (liftIO)
 import Data.Map.Strict (elems)
+import Data.List (sort)
 
 serve :: TVar Statuses -> IO ()
 serve signals = do
@@ -25,7 +26,7 @@ serve signals = do
 raw :: ServerPart [(RSSI, POSIXTime)] -> ServerPart Response
 raw rssis = dir "raw" $ do
     signalData <- rssis
-    ok $ toResponse (show signalData)
+    ok $ toResponse $ show $ sort signalData
 
 friendly :: ServerPart [(RSSI, POSIXTime)] -> ServerPart Response
 friendly rssis = do
