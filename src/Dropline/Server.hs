@@ -35,7 +35,7 @@ friendly rssis = do
         H.head $ do
             H.title "Dropline busy-o-meter"
         H.body $ do
-            let center x = x ! A.style "align:center"
+            let center x = x ! A.style "text-align:center"
             center $ H.p $ "It is"
             center $ H.p $ H.h1 $ H.toHtml (show busyness)
             center $ H.p $ "busy."
@@ -48,7 +48,7 @@ process signals = do
     return $ map format $ elems signals'
 
 score :: (RSSI, POSIXTime) -> Int
-score (RSSI signal, duration) = round (timeScore * signalScore / 20)
+score (RSSI signal, duration) = round (timeScore * signalScore / 7)
     where
     -- Starts to ignore signals around 2 or more hours old
     timeScore :: Double
