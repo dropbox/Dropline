@@ -52,7 +52,8 @@ process signals = do
     return $ map format $ elems signals'
 
 score :: (RSSI, POSIXTime) -> Double
-score (RSSI signal, duration) = timeScore * signalScore / 7
+-- This algorithm depends entirely on your wifi card and environment.
+score (RSSI signal, duration) = timeScore * signalScore / 7 
     where
     -- Starts to ignore signals around 2 or more hours old
     timeScore :: Double
