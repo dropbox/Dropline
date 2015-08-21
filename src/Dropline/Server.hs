@@ -10,7 +10,7 @@ import Happstack.Server (Response)
 import Happstack.Server.Routing (dir)
 import Happstack.Server.SimpleHTTP (ServerPart,
     simpleHTTP, nullConf, port, toResponse, ok)
-import Text.Blaze.Html5 as H (html, head, title, body, p, toHtml, h1, (!))
+import Text.Blaze.Html5 as H (html, head, title, body, p, h1, (!))
 import Text.Blaze.Html5.Attributes as A (style)
 import Control.Applicative ((<|>))
 import Control.Monad.Trans (liftIO)
@@ -48,7 +48,7 @@ process :: TVar Statuses -> ServerPart [(RSSI, POSIXTime)]
 process signals = do
     signals' <- liftIO . atomically . readTVar $ signals
     time <- liftIO getPOSIXTime
-    let format (Status rssi first last) = (rssi, time - first)
+    let format (Status rssi firstSeen lastSeen) = (rssi, time - firstSeen)
     return $ map format $ elems signals'
 
 score :: (RSSI, POSIXTime) -> Double

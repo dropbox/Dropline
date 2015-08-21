@@ -2,15 +2,15 @@ module Dropline.Tracker (track, Statuses, Status(..)) where
 
 import Dropline.Wifi (Signal(..), MAC, RSSI)
 import Dropline.Util (periodically)
-import Control.Concurrent (forkIO, threadDelay)
-import Control.Concurrent.STM (TChan, newTChan, writeTChan, readTChan,
-    TVar, newTVar, modifyTVar, readTVar, writeTVar, atomically)
+import Control.Concurrent (forkIO)
+import Control.Concurrent.STM (TChan, readTChan, atomically,
+    TVar, newTVar, modifyTVar, readTVar, writeTVar)
 import Data.Time.Clock.POSIX (POSIXTime, getPOSIXTime)
-import Data.Map.Strict (Map, (!))
+import Data.Map.Strict (Map)
 import qualified Data.Map.Strict as Map
 import Data.Sequence (Seq, (<|))
 import qualified Data.Sequence as Seq
-import Control.Monad (forever, when)
+import Control.Monad (forever)
 import Data.Foldable (foldl')
 
 -- A map from a MAC address to its signal strength and when it was last seen
